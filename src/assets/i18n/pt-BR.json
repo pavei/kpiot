@@ -1,0 +1,35 @@
+{
+  "100": "Started a new user register. Waiting for confirmation code to complete the register. The code confirmation was sent by SMS to your number",
+  "101" : "Updating the uncomplete register. Waiting for confirmation code to complete the register. The code confirmation was sent by SMS to your number",
+  "105" :  "New user registered successfully. Please, login now.",
+  "110" :  "Login done successfully.",
+  "112" : "Login done in the new device. Waiting for confirmation code to complete the registration. The code confirmation was sent by SMS to your number",
+  "115" : "Device changed successfully. Please, login now, and contact the support to release the new device.",
+  "Name": "Digite seu nome completo:",
+  "Phone": "Digite seu Telefone com DDD:",
+  "Register": "Registrar",
+  "Name is invalid" : "Nome é obrigatório",
+  "Phone is invalid" : "Telefone é inválido",
+  "Send": "Enviar",
+  "Waiting SMS": "Aguardando SMS",
+  "Confirmation Code": "Código de Confirmação",
+  "Confirmation Code is invalid": "Código de confirmação é inválido",
+  "until": "Até",
+  "You will receive an SMS with the confirmation code.": "Você irá receber um código de confirmação via SMS.",
+  "Access":"Acesso",
+  "History": "Histórico",
+  "Open": "Abrir",
+  "Configuration": "Configuração",
+  "Back": "Voltar",
+  "Yes": "Sim",
+  "No": "Não",
+  "Do you really want to cancel?": "Você tem certeza que deseja cancelar?",
+  "Do you really want to exit?": "Você tem certeza que deseja sair?",
+  "Logout": "Sair",
+  "Information": "Informações",
+  "Version": "Versão do aplicativo"
+}
+
+
+
+

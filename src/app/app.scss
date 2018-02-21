@@ -14,3 +14,23 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
+
+
+
+.item-error {
+  border: 0px;
+  margin: 0px;
+
+  .item-inner {
+    border-bottom: 0px !important;
+  }
+
+  ion-label {
+    margin: 0px !important;
+  }
+
+  p {
+    color: red;
+  }
+
+}

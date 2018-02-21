@@ -1,0 +1,58 @@
+<!--
+  Generated template for the RegisterPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar text-center="" color="primary">
+    <ion-title>Locker IOT</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+
+  <ion-card>
+    <ion-card-content>
+      {{ 'Para você ter acesso ao sistema do Locker você precisa registrar seu Nome e o Número do seu telefone.' | translate }}
+    </ion-card-content>
+  </ion-card>
+
+
+  <ion-item>
+    <ion-label stacked="" text-wrap>{{ 'Name' | translate }}</ion-label>
+
+    <ion-input [(ngModel)]="register.full_name" type="text" required="">
+    </ion-input>
+
+
+  </ion-item>
+
+  <ion-item class="item-error" *ngIf="(!register.full_name || register.full_name == '') && submitted">
+    <p>{{ 'Name is invalid' | translate }}</p>
+  </ion-item>
+
+
+  <ion-item>
+    <ion-label stacked="" text-wrap>{{ 'Phone' | translate }}</ion-label>
+
+    <ion-input [(ngModel)]="register.username" mask="(99) 99999-9999" type="text" placeholder="(99) 9999-9999"
+               autocomplete="off" required="">
+    </ion-input>
+
+  </ion-item>
+
+  <ion-item class="item-error" *ngIf="(!register.username || !phoneValid) && submitted">
+    <p>{{ 'Phone is invalid' | translate }}</p>
+  </ion-item>
+
+
+  <button style="margin-top: 20px; padding-left: 16px;" ion-button="" (click)="send()" full="">{{ 'Register' | translate }}</button>
+
+
+</ion-content>
+

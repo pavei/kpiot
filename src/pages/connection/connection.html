@@ -1,0 +1,32 @@
+<!--
+  Generated template for the ConnectionPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header xmlns="http://www.w3.org/1999/html">
+
+  <ion-navbar color="primary">
+    <ion-title>{{ 'Open' | translate }}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+
+  <button ion-button="" (click)="scanDevices()">Start Scan</button>
+
+  <ion-list>
+
+    <button ion-item (click)="connect(item)" *ngFor="let item of items" >
+      <h2>{{ item.name }}</h2>
+      <p>{{ item.id }}</p>
+
+    </button>
+
+
+  </ion-list>
+
+</ion-content>
