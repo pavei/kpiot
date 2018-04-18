@@ -29,7 +29,7 @@
   "Logout": "Sair",
   "Information": "Informações",
   "Version": "Versão do aplicativo",
-  "INFORMATION_BEFORE_SEARCH_DEVICES" : "Antes de iniciar as buscas pelo dispositivo, toque no botão do Locker e verifique se ele está com a luz indicativa piscando em azul.",
+  "INFORMATION_BEFORE_SEARCH_DEVICES" : "Antes de iniciar as buscas pelo dispositivo,!!!! toque no botão do Locker e verifique se ele está com a luz indicativa piscando em azul.",
   "Find devices" : "Encontrar dispositivos",
   "The device lost connection.": "O dispositivo perdeu a não consegue/perdeu conexão.",
   "Connect": "Conectar",
