@@ -1,4 +1,4 @@
-import {NgModule, ErrorHandler} from '@angular/core';
+import {NgModule, ErrorHandler, Injectable, Injector} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import {IonicApp, IonicModule, IonicErrorHandler, LoadingController} from 'ionic-angular';
 import { MyApp } from './app.component';
@@ -33,12 +33,38 @@ import {ConnectionAdminPage} from "../pages/connection-admin/connection-admin";
 import {RegisteDevicePage} from "../pages/registe-device/registe-device";
 import {BleService} from "../services/ble.service";
 import {PopoverPage} from "../pages/connection-admin/popover-page";
+import {Pro} from "@ionic/pro";
 
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 
+
+Pro.init('65c56af3', {
+  appVersion: '1.0.0'
+})
+
+@Injectable()
+export class MyErrorHandler implements ErrorHandler {
+  ionicErrorHandler: IonicErrorHandler;
+
+  constructor(injector: Injector) {
+    try {
+      this.ionicErrorHandler = injector.get(IonicErrorHandler);
+    } catch(e) {
+      // Unable to get the IonicErrorHandler provider, ensure
+      // IonicErrorHandler has been added to the providers list below
+    }
+  }
+
+  handleError(err: any): void {
+    Pro.monitoring.handleNewError(err);
+    // Remove this if you want to disable Ionic's auto exception handling
+    // in development mode.
+    this.ionicErrorHandler && this.ionicErrorHandler.handleError(err);
+  }
+}
 
 @NgModule({
   declarations: [
@@ -99,7 +125,8 @@ export function createTranslateLoader(http: HttpClient) {
     MessageHandler,
     BLE,
     BleService,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    IonicErrorHandler,
+    {provide: ErrorHandler, useClass: MyErrorHandler }
   ]
 })
 export class AppModule {}
