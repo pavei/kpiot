@@ -5,6 +5,7 @@
   "110" :  "Login done successfully.",
   "112" : "Login done in the new device. Waiting for confirmation code to complete the registration. The code confirmation was sent by SMS to your number",
   "115" : "Device changed successfully. Please, login now, and contact the support to release the new device.",
+  "20303": "This phone number is not an agent",
   "Name": "Digite seu nome completo:",
   "Phone": "Digite seu Telefone com DDD:",
   "Register": "Registrar",
@@ -27,7 +28,38 @@
   "Do you really want to exit?": "Você tem certeza que deseja sair?",
   "Logout": "Sair",
   "Information": "Informações",
-  "Version": "Versão do aplicativo"
+  "Version": "Versão do aplicativo",
+  "INFORMATION_BEFORE_SEARCH_DEVICES" : "Antes de iniciar as buscas pelo dispositivo, toque no botão do Locker e verifique se ele está com a luz indicativa piscando em azul.",
+  "Find devices" : "Encontrar dispositivos",
+  "The device lost connection.": "O dispositivo perdeu a não consegue/perdeu conexão.",
+  "Connect": "Conectar",
+  "20406": "Device already registered",
+  "Device": "Dispositivo",
+  "Device Info": "Informações do dispositivo",
+  "Device Name": "Nome do dispositivo",
+  "Register Device": "Registrar dispositivo",
+  "Disconnect": "Desconectar",
+   "Sending to server..": "Enviando para servidor..",
+  "Connecting with Locker": "Conectando com o Locker",
+  "Sending configuration": "Enviando configuração",
+  "Downloading new information": "Baixando novas informações",
+  "Device configuration success!": "O dispositivo foi atualizado com sucesso",
+  "Update device": "Atualizar dispositivo",
+  "Update": "Atualizar",
+  "Cannot connect with device": "Não foi possível conectar com o dispositivo. Verifique se a luz azul está piscando e tente novamente.",
+  "Scanning": "Buscando",
+  "Connecting": "Conectando",
+  "Loading log debug": "Carregando log de debugs",
+  "Log debug was send success": "Log de debug foi enviado com sucesso!",
+  "Opening": "Abrindo...",
+  "nak100": "ID do Locker é inválido",
+  "nak101": " Token inválido",
+  "nak102": "Fora do horário inicial e final que foi liberado o acesso",
+  "nak103":"Token expirou",
+  "nak104":" Não há mais espaço disponível para salvar tokens",
+  "nak106": "O tamanho da string recebida é incompatível"
+
+
 }
 
 

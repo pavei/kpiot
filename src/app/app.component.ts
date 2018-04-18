@@ -10,6 +10,7 @@ import {RegisterPage} from "../pages/register/register";
 import {RegisterConfirmationCodePage} from "../pages/register-confirmation-code/register-confirmation-code";
 import {PinStorage} from "../util/pin.storage";
 import {Device} from "@ionic-native/device";
+import {LockerIotService} from "../services/locker.iot.service";
 
 @Component({
   templateUrl: 'app.html'
@@ -23,10 +24,14 @@ export class MyApp {
               splashScreen: SplashScreen,
               public userStorage: UserStorageService,
               public device : Device,
+              private lockerIotService : LockerIotService,
               private translate: TranslateService, private pinStorage: PinStorage) {
     platform.ready().then(async () => {
       // console.log(translate.getBrowserLang());
       //
+
+
+
       if (translate.getBrowserLang() == "pt") {
         translate.setDefaultLang("pt-BR");
       } else if (translate.getBrowserLang() == "en") {
@@ -35,8 +40,8 @@ export class MyApp {
 
       await pinStorage.save(this.device.uuid ? this.device.uuid  : "123456" );
 
-      statusBar.styleDefault();
-
+      // statusBar.styleDefault();
+      statusBar.backgroundColorByHexString('#4A7A52');
       let user = await userStorage.getCurrentUser();
 
       if (user) {
@@ -52,7 +57,32 @@ export class MyApp {
       }
       splashScreen.hide();
 
+      this.refreshOnOpen();
+
     });
+
+
+  }
+
+
+  async refreshOnOpen(){
+
+    console.log("aqui refrescando")
+    let user = await this.userStorage.getCurrentUser();
+
+    try{
+
+      let response = await this.lockerIotService.getAccess();
+      user.access = response.data.access_list;
+
+      let devices = await this.lockerIotService.getDevices();
+      user.devices = devices.data;
+
+      this.userStorage.save(user);
+
+    }catch (e){
+
+    }
 
   }
 }

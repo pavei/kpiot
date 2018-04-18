@@ -18,10 +18,12 @@ export class MessageHandler {
 
   handleError(error) {
 
-    console.log(error);
+    console.log(JSON.stringify(error));
 
     if (error.status) {
-      this.showToast(error.code);
+
+
+      this.showToast(error.error.code);
 
     } else if (error.status == 0) {
 
@@ -34,7 +36,13 @@ export class MessageHandler {
 
 
     } else {
-      this.showToast("You are offline, try again later");
+
+      if (error.status == 502){
+        this.showToast("502 - You are offline, try again later");
+      }else{
+        this.showToast("You are offline, try again later");
+      }
+
     }
 
   }
@@ -58,7 +66,7 @@ export class MessageHandler {
   showToast(msg) {
 
     let toast = this.toastCtrl.create({
-      message: this.translateService.instant(msg),
+      message: this.translateService.instant(msg+""),
       showCloseButton: true,
       duration: 4000,
       closeButtonText: "ok",

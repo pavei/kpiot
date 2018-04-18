@@ -29,6 +29,7 @@ export class RegisterPage {
   }
 
 
+
   isValid(){
 
     console.log(this.register)
@@ -59,13 +60,12 @@ export class RegisterPage {
           loader.present();
 
           let response = await this.lockerIotService.register(this.register.username, this.register.full_name);
-          let str = await this.userStorage.save(response);
+          let str = await this.userStorage.save(this.register);
 
           this.messageHandler.showSuccess(response);
 
           this.navCtrl.setRoot(RegisterConfirmationCodePage);
         }
-
 
       }catch (e){
         this.messageHandler.handleError(e);

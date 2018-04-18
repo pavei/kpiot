@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {AlertController, NavController, NavParams} from 'ionic-angular';
+import {AlertController, App, NavController, NavParams} from 'ionic-angular';
 import {TranslateService} from "@ngx-translate/core";
 import {UserStorageService} from "../../util/user.storage.service";
 import {RegisterPage} from "../register/register";
@@ -24,6 +24,7 @@ export class ConfigurationPage {
               private translateService : TranslateService,
               private alertCtrl: AlertController,
               private userStorage : UserStorageService,
+              private app: App,
               public navParams: NavParams) {
   }
 
@@ -52,7 +53,8 @@ export class ConfigurationPage {
           text: this.translateService.instant("Yes"),
           handler: () => {
              this.userStorage.logout();
-            this.navCtrl.setRoot(RegisterPage);
+            this.app.getRootNav().setRoot(RegisterPage);
+            // this.navCtrl.setRoot(RegisterPage);
           }
         }
       ]

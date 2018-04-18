@@ -29,6 +29,10 @@ import {ConfigurationPage} from "../pages/configuration/configuration";
 import {LoadingIndicator} from "../util/loading";
 import {BLE} from "@ionic-native/ble";
 import {Ionic2MaskDirective} from "ionic2-mask-directive";
+import {ConnectionAdminPage} from "../pages/connection-admin/connection-admin";
+import {RegisteDevicePage} from "../pages/registe-device/registe-device";
+import {BleService} from "../services/ble.service";
+import {PopoverPage} from "../pages/connection-admin/popover-page";
 
 
 export function createTranslateLoader(http: HttpClient) {
@@ -47,6 +51,9 @@ export function createTranslateLoader(http: HttpClient) {
     ConnectionPage,
     ConfigurationPage,
     LoadingIndicator,
+    ConnectionAdminPage,
+    RegisteDevicePage,
+    PopoverPage,
     Ionic2MaskDirective
 
   ],
@@ -73,6 +80,9 @@ export function createTranslateLoader(http: HttpClient) {
     HistoryPage,
     ConnectionPage,
     ConfigurationPage,
+    ConnectionAdminPage,
+    RegisteDevicePage,
+    PopoverPage,
     LoadingIndicator
   ],
   providers: [
@@ -88,6 +98,7 @@ export function createTranslateLoader(http: HttpClient) {
     Device,
     MessageHandler,
     BLE,
+    BleService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

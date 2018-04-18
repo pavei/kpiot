@@ -1,8 +1,8 @@
 {
   "name": "khomp_locker_iot_app",
-  "app_id": "",
   "type": "ionic-angular",
   "integrations": {
     "cordova": {}
-  }
+  },
+  "app_id": "9122e37e"
 }

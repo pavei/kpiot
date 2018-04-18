@@ -18,18 +18,69 @@ export class LockerIotService {
 
   }
 
+  removeSpecialChars(str){
+    return str.replace(/[^0-9]/g, '')
+  }
+
   register(phone, name) {
 
     let path = "/register";
 
     let obj = {
       app_type_id: ENV.APP_TYPE_ID,
-      username: phone,
+      username: this.removeSpecialChars(phone),
       full_name: name,
       app_version: ENV.APP_VERSION
     };
 
     return this.execute(ENV.BASE_URL_REST + path, obj);
+  }
+
+
+  registerDevice(deviceName, deviceInfo, deviceMac) {
+
+    let path = "/register_device";
+
+    let obj = {
+      device_name: deviceName,
+      device_info: deviceInfo,
+      device_mac: deviceMac
+    };
+
+    console.log(ENV.BASE_URL_REST + path);
+
+    return this.execute(ENV.BASE_URL_REST + path, obj);
+  }
+  updateDevice(deviceName, deviceInfo, deviceMac) {
+
+    let path = "/update_device";
+
+    let obj = {
+      device_name: deviceName,
+      device_info: deviceInfo,
+      device_mac: deviceMac
+    };
+
+    console.log(ENV.BASE_URL_REST + path);
+
+    return this.execute(ENV.BASE_URL_REST + path, obj);
+  }
+
+
+
+  updateDeviceConfirm(deviceMac, responseConfigure){
+
+      let path = "/update_device_confirm";
+
+      let obj = {
+        cod: responseConfigure,
+        device_mac: deviceMac
+      };
+
+      console.log(ENV.BASE_URL_REST + path);
+
+      return this.execute(ENV.BASE_URL_REST + path, obj);
+
   }
 
 
@@ -39,13 +90,15 @@ export class LockerIotService {
 
     let obj = {
       app_type_id: ENV.APP_TYPE_ID,
-      username: phone,
+      username: this.removeSpecialChars(phone),
       app_version: ENV.APP_VERSION,
       confirmation_code: confirmationCode
     };
 
     return this.execute(ENV.BASE_URL_REST + path, obj);
   }
+
+
 
 
   getAccess() {
@@ -76,22 +129,48 @@ export class LockerIotService {
       log_info: logInfo
     };
 
+    console.log(JSON.stringify(obj));
+
+
     return this.execute(ENV.BASE_URL_REST + path, obj);
   }
 
 
-  getDevices(deviceMac, cod, logInfo) {
+  getDevices() {
 
     let path = "/get_devices";
+    let obj = {};
+    return this.execute(ENV.BASE_URL_REST + path, obj);
+  }
+
+
+
+  getDebugTokens(deviceMac) {
+
+    let path = "/get_debug_log_tokens";
 
     let obj = {
       device_mac: deviceMac,
-      cod: cod,
-      log_info: logInfo
     };
 
     return this.execute(ENV.BASE_URL_REST + path, obj);
   }
+
+
+  uploadDebug(deviceMac, str) {
+
+    let path = "/upload_debug_log";
+
+    let obj = {
+      device_mac: deviceMac,
+      log: str
+    };
+
+    console.log(JSON.stringify(obj));
+
+    return this.execute(ENV.BASE_URL_REST + path, obj);
+  }
+
 
 
   execute(url, payload): Promise<any> {

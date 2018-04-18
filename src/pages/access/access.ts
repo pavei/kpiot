@@ -29,7 +29,7 @@ export class AccessPage extends LoadingPage{
     super(true);
   }
 
-  ionViewDidLoad() {
+  ionViewWillEnter() {
     console.log('ionViewDidLoad RegisterPage');
     this.list();
   }
@@ -44,6 +44,11 @@ export class AccessPage extends LoadingPage{
       let response = await this.lockerIotService.getAccess();
       user.access = response.data.access_list;
       this.access =  response.data.access_list;
+
+      let devices = await this.lockerIotService.getDevices();
+      user.devices = devices.data;
+
+      this.userStorage.save(user);
 
     }catch (e){
       this.messageHandler.handleError(e);

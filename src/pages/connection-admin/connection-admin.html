@@ -11,7 +11,7 @@
 
     <ion-buttons end>
 
-      <button icon-only="" ion-button="" clear (click)="scanDevices()" *ngIf="!initialInformation">
+      <button icon-only="" ion-button="" clear (click)="scanDevices()">
         <ion-icon name="bluetooth"></ion-icon>
       </button>
 
@@ -21,11 +21,15 @@
 
 </ion-header>
 
+<ion-content [attr.text-center]="initialInformation">
 
-<ion-content [ngClass]="{'vertical-align-content': initialInformation}" [attr.text-center]="initialInformation">
 
+  <div text-center="" *ngIf="scan">
+    <ion-spinner item-start name="dots"></ion-spinner>
+    <div>{{ 'Scanning' | translate }}</div>
+  </div>
 
-  <ion-grid *ngIf="initialInformation">
+  <ion-grid *ngIf="items.length == 0">
     <ion-row>
       <ion-col>
 
@@ -35,8 +39,8 @@
           </ion-card-content>
         </ion-card>
 
-        <button ion-button="" (click)="scanDevices()" icon-left="">  <ion-icon name="bluetooth"></ion-icon>
-          {{ 'Find devices' | translate }}</button>
+        <!--<button ion-button="" (click)="scanDevices()" icon-left="">  <ion-icon name="bluetooth"></ion-icon>-->
+          <!--{{ 'Find devices' | translate }}</button>-->
       </ion-col>
     </ion-row>
   </ion-grid>
@@ -49,10 +53,12 @@
       <ion-note style="color: darkred" *ngIf="!item.access">{{ 'Não tem acesso' | translate }}</ion-note>
       <ion-note style="color: green" *ngIf="item.access">{{ 'Você tem acesso' | translate }}</ion-note>
 
-      <button item-right="" ion-button=""  *ngIf="!item.connected && item.access" (click)="connect(item, $event)"> {{ 'Connect' | translate }}</button>
-      <button item-right="" ion-button=""  *ngIf="item.connected && item.access" (click)="open(item, $event)"> {{ 'Open' | translate }}</button>
 
+      <button item-right="" ion-button=""  *ngIf="item.access" style="margin-left: 10px;" (click)="connect(item, $event)"> {{ 'Open' | translate }}</button>
+      <button large item-right=""  style="width: 20px; padding: 10px;" clear icon-only=""  ion-button="" (click)="presentPopover($event, item, item.device)"><ion-icon name="md-more"></ion-icon>
+      </button>
     </button>
+
 
   </ion-list>
 

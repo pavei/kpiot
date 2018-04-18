@@ -49,6 +49,7 @@ export class RegisterConfirmationCodePage {
 
         loader.present();
         let user = await this.userStorage.getCurrentUser();
+        console.log(user)
         let response = await this.lockerIotService.registerConfirmationCode(user.username, this.confirmationCode);
 
         user.status = "ready";
