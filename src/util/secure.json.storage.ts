@@ -55,5 +55,4 @@ export class SecureJsonStorage {
     return this.storage.remove(key);
   }
 
-
 }
