@@ -127,25 +127,40 @@ export class RegisteDevicePage {
 
           this.setLoadingText(this.translate.instant("Sending configuration"));
 
+
+
           let responseConfigure =  await this.bleService.configure(this.device.id, responseRegister.data);
 
 
-          let responseUpdate = await this.lockerIotService.updateDeviceConfirm(this.device.id, responseConfigure);
+          let responseConfigureReplace = responseConfigure.replace("\x00", '')
+
+          console.log("resposta do configuracao", responseConfigureReplace);
+
+          try{
+            let responseUpdate = await this.lockerIotService.updateDeviceConfirm(this.device.id, responseConfigureReplace);
+
+            this.setLoadingText(this.translate.instant("Downloading new information"))
+
+            let response = await this.lockerIotService.getAccess();
+            user.access = response.data.access_list;
+            let devices = await this.lockerIotService.getDevices();
+            user.devices = devices.data;
+            await this.userStorage.save(user);
+
+            this.messageHandler.showToast("Device configuration success!")
 
 
-          this.setLoadingText(this.translate.instant("Downloading new information"))
+            this.viewCtrl.dismiss();
 
-          let response = await this.lockerIotService.getAccess();
-          user.access = response.data.access_list;
-          let devices = await this.lockerIotService.getDevices();
-          user.devices = devices.data;
-          await this.userStorage.save(user);
+          }catch (e) {
+            console.log(e);
+            this.messageHandler.handleError(e);
+          }finally {
+            loader.dismiss();
+            this.ble.disconnect(this.device.id);
+          }
 
-          this.messageHandler.showToast("Device configuration success!")
 
-          this.viewCtrl.dismiss();
-
-          loader.dismiss();
         //
         }, error => {
           console.log("erro ao conectar");

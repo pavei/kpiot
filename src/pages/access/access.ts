@@ -42,6 +42,8 @@ export class AccessPage extends LoadingPage{
     try{
 
       let response = await this.lockerIotService.getAccess();
+
+
       user.access = response.data.access_list;
       this.access =  response.data.access_list;
 

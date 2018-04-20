@@ -14,7 +14,7 @@
       </button>
     </ion-buttons>
 
-    <ion-title>{{ !deviceRegister ? 'Register Device' : 'Update device' | translate }}</ion-title>
+    <ion-title>{{ !deviceRegister ? ('Register Device' | translate) : ('Update device' | translate) }}</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -56,6 +56,6 @@
   </ion-item>
 
 
-  <button style="margin-top: 20px; padding-left: 16px;" ion-button="" (click)="send()" full="">{{ !deviceRegister ? 'Register' : 'Update' | translate }}</button>
+  <button style="margin-top: 20px; padding-left: 16px;" ion-button="" (click)="send()" full="">{{ !deviceRegister ? ('Register'|translate) : ('Update' | translate) }}</button>
 
 </ion-content>

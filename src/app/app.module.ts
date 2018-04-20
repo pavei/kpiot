@@ -35,7 +35,6 @@ import {BleService} from "../services/ble.service";
 import {PopoverPage} from "../pages/connection-admin/popover-page";
 import {Pro} from "@ionic/pro";
 
-
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }

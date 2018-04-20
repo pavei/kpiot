@@ -6,6 +6,16 @@
   "112" : "Login done in the new device. Waiting for confirmation code to complete the registration. The code confirmation was sent by SMS to your number",
   "115" : "Device changed successfully. Please, login now, and contact the support to release the new device.",
   "20303": "This phone number is not an agent",
+  "20300": "Confirmation Code is wrong.",
+  "20305": "You are not registered. Please, start a new register.",
+  "20306" : "You has an uncompleted register. Please, start a new register.",
+  "20320": "You already registered. Please, login.",
+  "20330" : "The finger_print is incorrect.",
+  "20331": "The confirmation code is incorrect",
+  "20360" : "Invalid session token.",
+  "20361": "Session token expired. Please, login again.",
+  "50502":  "System Unexpected error:",
+  "51000" : "No data.",
   "Name": "Digite seu nome completo:",
   "Phone": "Digite seu Telefone com DDD:",
   "Register": "Registrar",
@@ -58,7 +68,6 @@
   "nak103":"Token expirou",
   "nak104":" Não há mais espaço disponível para salvar tokens",
   "nak106": "O tamanho da string recebida é incompatível"
-
 
 }
 
