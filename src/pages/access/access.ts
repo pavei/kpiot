@@ -34,6 +34,15 @@ export class AccessPage extends LoadingPage{
     this.list();
   }
 
+  ionSelected() {
+    console.log("Home Page has been selected");
+    // do your stuff here
+
+    // this.ready();
+    this.loading = true;
+    this.list();
+
+  }
 
   async list(refresher?){
 
@@ -66,6 +75,12 @@ export class AccessPage extends LoadingPage{
 
     }
 
+  }
+
+  refresh(){
+    // this.ready();
+    this.loading = true;
+    this.list();
   }
 
 

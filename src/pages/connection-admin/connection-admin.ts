@@ -47,7 +47,7 @@ export class ConnectionAdminPage extends ConnectionPage{
     myEvent.preventDefault();
     myEvent.stopPropagation();
 
-    let popover = this.popoverCtrl.create(PopoverPage,{device: device, deviceRegister: deviceRegister});
+    let popover = this.popoverCtrl.create(PopoverPage,{device: device, deviceRegister: deviceRegister, screen: this});
     popover.present({
         ev: myEvent
       }

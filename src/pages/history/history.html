@@ -8,6 +8,15 @@
 
   <ion-navbar color="primary">
     <ion-title>{{ 'History' | translate }}</ion-title>
+
+
+    <ion-buttons end>
+
+      <button icon-only="" ion-button="" clear (click)="refresh()">
+        <ion-icon name="md-refresh"></ion-icon>
+      </button>
+
+    </ion-buttons>
   </ion-navbar>
 
 </ion-header>

@@ -27,6 +27,7 @@ export class ConnectionPage {
 
   access = [];
   devices = [];
+  itensToShow = [];
   scan = false;
   timeoutScan;
   timeoutConnect;
@@ -46,27 +47,37 @@ export class ConnectionPage {
 
   async ionViewWillEnter() {
 
-    console.log("aqui no will enter")
+    console.log("aqui no will enter");
+
     let user = await this.userStorage.getCurrentUser();
     this.access = user.access;
     this.devices = user.devices;
     this.initialInformation = true;
     this.items = [];
+    this.itensToShow = null;
     this.scan = false;
-    this.scanDevices();
+    this.scanDevices(true);
   }
 
   ionViewWillLeave(){
 
     console.log("aqui no will leeave")
+
+    this.ble.stopScan();
+
+    if (this.timeoutScan){
+      clearTimeout(this.timeoutScan);
+    }
+
     let device =  this.items.find(item => item.connected);
 
     if (device){
       this.disconnect(device, true);
     }
+
   }
 
-  async scanDevices() {
+  async scanDevices(refresh) {
 
     let isEnabled = await this.bleService.isEnableAndtryEnable();
 
@@ -79,28 +90,39 @@ export class ConnectionPage {
 
       // let loader = this.loadingController.create();
       this.scan = true;
-
       this.initialInformation = false;
 
-      this.items = [];
+      if (refresh){
+        this.items = [];
+      }
+
       this.ble.startScan([]).subscribe(async device => {
         console.log(JSON.stringify(device));
         this.zone.run(() => {
+
           if (device && device.name && device.name.indexOf(ConnectionPage.NAME_PATTERN) >= 0) {
-            this.items.unshift(device);
 
-            let find = this.access.find(item => device.id == item.mac);
+            let alreadyExists = this.items.find(item => device.id == item.id);
 
-            if (find) {
-              device.access = find;
+            if (!alreadyExists){
+              device.name = device.name.replace(ConnectionPage.NAME_PATTERN, '')
+
+              this.items.unshift(device);
+
+              let find = this.access.find(item => device.id == item.mac);
+
+              if (find) {
+                device.access = find;
+              }
+
+              let findDevices = this.devices.find(item => device.id == item.ble_mac);
+
+              if (findDevices) {
+                console.log("find devices", findDevices)
+                device.device = findDevices;
+              }
             }
 
-            let findDevices = this.devices.find(item => device.id == item.ble_mac);
-
-            if (findDevices) {
-              console.log("find devices", findDevices)
-              device.device = findDevices;
-            }
 
           }
         });
@@ -117,7 +139,6 @@ export class ConnectionPage {
       }
 
       this.timeoutScan = setTimeout(this.setStatus.bind(this), ConnectionPage.SEARCH_SECONDS * 1000, 'Scan complete');
-
     }
   }
 
@@ -132,6 +153,12 @@ export class ConnectionPage {
     } else {
       this.initialInformation = false;
     }
+
+    if (this.itensToShow ){
+      this.itensToShow = this.items;
+    }
+
+    this.scanDevices(false);
   }
 
 
@@ -142,7 +169,6 @@ export class ConnectionPage {
       event.stopImmediatePropagation();
       event.stopPropagation();
     }
-
 
     let isEnabled = await this.bleService.isEnableAndtryEnable();
 

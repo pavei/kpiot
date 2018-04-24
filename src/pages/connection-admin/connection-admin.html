@@ -11,7 +11,7 @@
 
     <ion-buttons end>
 
-      <button icon-only="" ion-button="" clear (click)="scanDevices()">
+      <button icon-only="" ion-button="" clear (click)="scanDevices(true)">
         <ion-icon name="bluetooth"></ion-icon>
       </button>
 
@@ -34,8 +34,14 @@
       <ion-col>
 
         <ion-card>
-          <ion-card-content>
+          <ion-card-content text-center="">
             <p>{{ 'INFORMATION_BEFORE_SEARCH_DEVICES' | translate }}</p>
+
+            <div text-center="">
+              <img src="assets/imgs/Locker.png" style="width: 100px; margin: auto"/>
+
+            </div>
+
           </ion-card-content>
         </ion-card>
 
