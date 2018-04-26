@@ -201,7 +201,6 @@ export class ConnectionPage {
             this.debug(device, loader);
           }
 
-
         })
       }, error => {
         console.log("aqui no connect error")
@@ -211,13 +210,12 @@ export class ConnectionPage {
           if (device.connected){
             device.connected = false;
           }else{
-            this.messageHandler.showToast("Cannot connect with device")
+            this.messageHandler.showToast("Cannot connect with device - Connection")
           }
 
         })
       })
     }
-
 
     if (this.timeoutConnect){
       clearTimeout(this.timeoutConnect);
@@ -231,7 +229,7 @@ export class ConnectionPage {
     // console.log(message);
 
     if (!device.connected){
-      this.messageHandler.showToast("Cannot connect with device")
+      this.messageHandler.showToast("Cannot connect with device - Timeout")
       loader.dismiss();
 
     }
