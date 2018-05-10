@@ -79,8 +79,6 @@ export class MyApp {
       user.devices = devices.data;
 
 
-      console.log(JSON.stringify(user.openList));
-      console.log(user.openList.length);
 
       if (user.openList){
 
