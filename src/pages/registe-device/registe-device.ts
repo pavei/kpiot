@@ -122,7 +122,7 @@ export class RegisteDevicePage {
 
 
           clearTimeout(lockerTimeout);
-
+          try{
           this.setLoadingText(this.translate.instant("Sending configuration"));
           let responseConfigure =  await this.bleService.configure(this.device.id, responseRegister.data);
 
@@ -130,8 +130,6 @@ export class RegisteDevicePage {
           let responseConfigureReplace = responseConfigure.replace("\x00", '')
 
           console.log("resposta do configuracao", responseConfigureReplace);
-
-          try{
 
             let responseUpdate = await this.lockerIotService.updateDeviceConfirm(this.device.id, responseConfigureReplace);
             this.setLoadingText(this.translate.instant("Downloading new information"))

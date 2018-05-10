@@ -12,6 +12,7 @@ import {PinStorage} from "../util/pin.storage";
 import {Device} from "@ionic-native/device";
 import {LockerIotService} from "../services/locker.iot.service";
 import * as PromiseBlueBird from 'bluebird';
+import {Network} from "@ionic-native/network";
 
 @Component({
   templateUrl: 'app.html'
@@ -26,6 +27,7 @@ export class MyApp {
               public userStorage: UserStorageService,
               public device : Device,
               private lockerIotService : LockerIotService,
+              private network: Network,
               private translate: TranslateService, private pinStorage: PinStorage) {
     platform.ready().then(async () => {
       // console.log(translate.getBrowserLang());
@@ -60,17 +62,32 @@ export class MyApp {
 
       this.refreshOnOpen();
 
+      this.network.onConnect().subscribe(() => {
+
+        // We just got a connection but we need to wait briefly
+        // before we determine the connection type. Might need to wait.
+        // prior to doing any api requests as well.
+        setTimeout(() => {
+
+          // alert("AQUIIIIIIIIIII no network")
+          this.sync();
+        }, 5000);
+      });
+
     });
 
 
   }
 
 
+
+
+
   async refreshOnOpen(){
 
     console.log("aqui refrescando")
-    let user = await this.userStorage.getCurrentUser();
 
+    let user = await this.userStorage.getCurrentUser();
     try{
 
       let response = await this.lockerIotService.getAccess();
@@ -79,28 +96,35 @@ export class MyApp {
       user.devices = devices.data;
 
 
-
-      if (user.openList){
-
-        console.log("aqui mandando no open list")
-        PromiseBlueBird.map(user.openList, async item => {
-
-
-         let result =  await this.lockerIotService.triggeredDevice(item["deviceId"], item["cod"], item["logInfo"]);
-         console.log(result);
-         console.log(user.openList.indexOf(item));
-         user.openList.splice(user.openList.indexOf(item), 1);
-         return this.userStorage.save(user);
-
-        }, {concurrency: 1}).then(complete => {
-          console.log("compelto");
-        }).catch(error => {
-          console.log("erro ao sincronziar", JSON.stringify(error));
-        })
-      }
+      this.sync();
 
     }catch (e){
 
+    }
+
+  }
+
+  async sync(){
+
+    let user = await this.userStorage.getCurrentUser();
+    if (user.openList){
+
+      console.log("aqui mandando no open list")
+      PromiseBlueBird.map(user.openList, async item => {
+
+        let result =  await this.lockerIotService.triggeredDevice(item["deviceId"], item["cod"], item["logInfo"]);
+        console.log(result);
+        console.log(user.openList.indexOf(item));
+        user.openList.splice(user.openList.indexOf(item), 1);
+        return this.userStorage.save(user);
+
+      }, {concurrency: 1}).then(complete => {
+        console.log("compelto");
+
+        // alert("AQUIIIIIIIIIII no network 2")
+      }).catch(error => {
+        console.log("erro ao sincronziar", JSON.stringify(error));
+      })
     }
 
   }

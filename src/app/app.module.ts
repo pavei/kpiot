@@ -35,6 +35,7 @@ import {BleService} from "../services/ble.service";
 import {PopoverPage} from "../pages/connection-admin/popover-page";
 import {Pro} from "@ionic/pro";
 import {ArraySortPipe} from "../util/sort-filter";
+import {Network} from "@ionic-native/network";
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -125,6 +126,7 @@ export class MyErrorHandler implements ErrorHandler {
     Device,
     MessageHandler,
     BLE,
+    Network,
     BleService,
     IonicErrorHandler,
     {provide: ErrorHandler, useClass: MyErrorHandler }

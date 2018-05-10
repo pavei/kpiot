@@ -32,6 +32,8 @@ export class ConnectionPage {
   timeoutScan;
   timeoutConnect;
 
+  tempScan = [];
+
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public ble: BLE,
@@ -105,34 +107,45 @@ export class ConnectionPage {
         this.items = [];
       }
 
+      this.tempScan = [];
+
       this.ble.startScan([]).subscribe(async device => {
         console.log(JSON.stringify(device));
+
+
         this.zone.run(() => {
 
           if (device && device.name && device.name.indexOf(ConnectionPage.NAME_PATTERN) >= 0) {
 
             let alreadyExists = this.items.find(item => device.id == item.id);
 
+            console.log("adicionando no tempScam", device.id);
+            this.tempScan.push(device.id);
+
             if (!alreadyExists){
               device.name = device.name.replace(ConnectionPage.NAME_PATTERN, '')
-
               this.items.unshift(device);
 
-              let find = this.access.find(item => device.id == item.mac);
+              console.log("aqui no acesso");
 
-              if (find) {
-                device.access = find;
+              if (this.access){
+
+                let find = this.access.find(item => device.id == item.mac);
+                if (find) {
+                  device.access = find;
+                }
               }
 
-              let findDevices = this.devices.find(item => device.id == item.ble_mac);
+              if (this.devices){
+                let findDevices = this.devices.find(item => device.id == item.ble_mac);
 
-              if (findDevices) {
-                console.log("find devices", findDevices)
-                device.device = findDevices;
+                if (findDevices) {
+                  console.log("find devices", findDevices)
+                  device.device = findDevices;
+                }
               }
+
             }
-
-
           }
         });
 
@@ -163,8 +176,32 @@ export class ConnectionPage {
       this.initialInformation = false;
     }
 
-    if (this.itensToShow ){
-      this.itensToShow = this.items;
+    // if (this.itensToShow ){
+    //   this.itensToShow = this.items;
+    // }
+
+    console.log("aqui no set status")
+
+    if (this.tempScan && this.items){
+
+      console.log("aqui dentro verificando")
+        this.items.forEach(item => {
+
+
+          console.log("item", item);
+
+          let find = this.tempScan.find(deviceId => deviceId == item.id);
+
+          console.log("encontrei", find);
+
+          if (!find){
+            console.log("entrei aqui no slice")
+
+            this.zone.run(() => {
+              this.items.splice(this.items.indexOf(item), 1);
+            })
+          }
+        })
     }
 
     this.scanDevices(false);
@@ -229,7 +266,7 @@ export class ConnectionPage {
 
           // }else{
             loader.dismiss();
-            this.messageHandler.showToast("INFORMATION_BEFORE_SEARCH_DEVICES")
+            // this.messageHandler.showToast("INFORMATION_BEFORE_SEARCH_DEVICES")
 
         })
       })
