@@ -68,6 +68,9 @@ export class RegisterPage {
         }
 
       }catch (e){
+
+        console.log(e);
+
         this.messageHandler.handleError(e);
       }finally {
         loader.dismiss();

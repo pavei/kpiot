@@ -95,6 +95,8 @@ export class RegisteDevicePage {
 
     let responseRegister = null;
 
+    let lockerTimeout = null;
+
     try {
 
       let isEnabled = await this.bleService.isEnableAndtryEnable();
@@ -102,11 +104,8 @@ export class RegisteDevicePage {
       if (this.isValid() && isEnabled ) {
 
 
-
         loader.present();
         let user = await this.userStorage.getCurrentUser();
-
-
 
 
         if (this.deviceRegister) {
@@ -117,8 +116,7 @@ export class RegisteDevicePage {
         }
 
         this.setLoadingText(this.translate.instant("Connecting with Locker"));
-        let lockerTimeout = setTimeout(this.showMessageConnection.bind(this), ConnectionPage.CONNCETION_SECONDS * 1000, 'Scan complete', loader);
-
+        lockerTimeout = setTimeout(this.showMessageConnection.bind(this), ConnectionPage.CONNCETION_SECONDS * 1000, 'Scan complete', loader);
 
         this.ble.connect(this.device.id).subscribe(async connection => {
 
@@ -126,9 +124,6 @@ export class RegisteDevicePage {
           clearTimeout(lockerTimeout);
 
           this.setLoadingText(this.translate.instant("Sending configuration"));
-
-
-
           let responseConfigure =  await this.bleService.configure(this.device.id, responseRegister.data);
 
 
@@ -137,8 +132,8 @@ export class RegisteDevicePage {
           console.log("resposta do configuracao", responseConfigureReplace);
 
           try{
-            let responseUpdate = await this.lockerIotService.updateDeviceConfirm(this.device.id, responseConfigureReplace);
 
+            let responseUpdate = await this.lockerIotService.updateDeviceConfirm(this.device.id, responseConfigureReplace);
             this.setLoadingText(this.translate.instant("Downloading new information"))
 
             let response = await this.lockerIotService.getAccess();
@@ -148,21 +143,26 @@ export class RegisteDevicePage {
             await this.userStorage.save(user);
 
             this.messageHandler.showToast("Device configuration success!")
-
-
             this.viewCtrl.dismiss();
 
           }catch (e) {
-            console.log(e);
+            console.log(JSON.stringify(e));
+            console.log("aqui no erro de enviar ao desconcetar");
             this.messageHandler.handleError(e);
           }finally {
+            if (lockerTimeout) {
+              clearTimeout(lockerTimeout);
+            }
             loader.dismiss();
             this.ble.disconnect(this.device.id);
           }
 
-
         //
         }, error => {
+
+          if (lockerTimeout) {
+            clearTimeout(lockerTimeout);
+          }
           console.log("erro ao conectar");
 
           loader.dismiss();
@@ -174,11 +174,18 @@ export class RegisteDevicePage {
       }
 
     } catch (e) {
+
+      if (lockerTimeout){
+        clearTimeout(lockerTimeout);
+      }
+
+      console.log("aqui no erro de enviar geral");
       console.log(JSON.stringify(e));
       this.messageHandler.handleError(e);
       loader.dismiss();
     } finally {
 
+      // loader.dismiss();
     }
 
   }

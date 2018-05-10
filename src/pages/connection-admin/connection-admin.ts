@@ -41,6 +41,17 @@ export class ConnectionAdminPage extends ConnectionPage{
     console.log('ionViewDidLoad ConnectionAdminPage');
   }
 
+  ionSelected() {
+    console.log("Home Page has been selected 1 ");
+    // do your stuff here
+
+    this.disconectIfNeed();
+    this.ionViewWillEnter();
+    // this.ready();
+
+  }
+
+
 
   presentPopover(myEvent, device, deviceRegister) {
 

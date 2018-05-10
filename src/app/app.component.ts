@@ -11,6 +11,7 @@ import {RegisterConfirmationCodePage} from "../pages/register-confirmation-code/
 import {PinStorage} from "../util/pin.storage";
 import {Device} from "@ionic-native/device";
 import {LockerIotService} from "../services/locker.iot.service";
+import * as PromiseBlueBird from 'bluebird';
 
 @Component({
   templateUrl: 'app.html'
@@ -74,15 +75,42 @@ export class MyApp {
 
       let response = await this.lockerIotService.getAccess();
       user.access = response.data.access_list;
-
       let devices = await this.lockerIotService.getDevices();
       user.devices = devices.data;
 
-      this.userStorage.save(user);
+
+      console.log(JSON.stringify(user.openList));
+      console.log(user.openList.length);
+
+      if (user.openList){
+
+        console.log("aqui mandando no open list")
+        PromiseBlueBird.map(user.openList, async item => {
+
+
+         let result =  await this.lockerIotService.triggeredDevice(item["deviceId"], item["cod"], item["logInfo"]);
+         console.log(result);
+         console.log(user.openList.indexOf(item));
+         user.openList.splice(user.openList.indexOf(item), 1);
+         return this.userStorage.save(user);
+
+        }, {concurrency: 1}).then(complete => {
+          console.log("compelto");
+        }).catch(error => {
+          console.log("erro ao sincronziar", JSON.stringify(error));
+        })
+      }
 
     }catch (e){
 
     }
 
   }
+
+
+  asyncForEach = async (array, callback) => {
+    for (let index = 0; index < array.length; index++) {
+      await callback(array[index], index, array)
+    }
+  };
 }

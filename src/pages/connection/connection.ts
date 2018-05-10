@@ -69,25 +69,34 @@ export class ConnectionPage {
       clearTimeout(this.timeoutScan);
     }
 
-    let device =  this.items.find(item => item.connected);
+    this.disconectIfNeed();
+  }
 
-    if (device){
-      this.disconnect(device, true);
+   async  disconectIfNeed(){
+
+    if (this.items.length > 0){
+      let device =  this.items.find(item => item.connected);
+
+      if (device){
+        await this.disconnect(device, true);
+      }
     }
-
   }
 
   async scanDevices(refresh) {
 
+    this.disconectIfNeed();
     let isEnabled = await this.bleService.isEnableAndtryEnable();
 
     if (isEnabled) {
 
-      let device =  this.items.find(item => item.connected);
-      if (device){
-        this.disconnect(device, true);
-      }
+      // let device =  this.items.find(item => item.connected);
+      // if (device){
+      //   this.disconnect(device, true);
+      // }
 
+
+      // this.disconectIfNeed();
       // let loader = this.loadingController.create();
       this.scan = true;
       this.initialInformation = false;
@@ -206,12 +215,21 @@ export class ConnectionPage {
         console.log("aqui no connect error")
         console.log(JSON.stringify(error));
 
+
+        if (this.timeoutConnect){
+          clearTimeout(this.timeoutConnect);
+        }
+
         this.zone.run(() => {
-          if (device.connected){
+          // if (device.connected){
             device.connected = false;
-          }else{
-            this.messageHandler.showToast("Cannot connect with device - Connection")
-          }
+            this.scan = false;
+            this.ble.stopScan();
+            this.scanDevices(true);
+
+          // }else{
+            loader.dismiss();
+            this.messageHandler.showToast("INFORMATION_BEFORE_SEARCH_DEVICES")
 
         })
       })
@@ -225,11 +243,13 @@ export class ConnectionPage {
 
   }
 
+
   showMessageConnection(message, loader, device) {
     // console.log(message);
 
     if (!device.connected){
-      this.messageHandler.showToast("Cannot connect with device - Timeout")
+      this.ble.disconnect(device.id);
+      this.messageHandler.showToast("INFORMATION_BEFORE_SEARCH_DEVICES")
       loader.dismiss();
 
     }
@@ -316,7 +336,28 @@ export class ConnectionPage {
      if (firstCommand.indexOf("nak") > -1){
        this.messageHandler.showPopup(this.translate.instant(firstCommand), this.translate.instant("Error"));
      }
-      await this.lockerIotService.triggeredDevice(device.id, firstCommand, openReturn);
+
+     try{
+       await this.lockerIotService.triggeredDevice(device.id, firstCommand, openReturn);
+     }catch (e) {
+
+       console.log("salvei")
+       let user = await this.userStorage.getCurrentUser();
+
+       if (!user.openList){
+         user.openList = [];
+       }
+
+       user.openList.push({
+         deviceId : device.id,
+         cod : firstCommand,
+         logInfo : openReturn
+       });
+
+
+       this.userStorage.save(user);
+
+     }
 
     }catch (e){
       console.log("error", JSON.stringify(e));

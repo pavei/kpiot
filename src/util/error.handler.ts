@@ -68,7 +68,7 @@ export class MessageHandler {
     let toast = this.toastCtrl.create({
       message: this.translateService.instant(msg+""),
       showCloseButton: true,
-      duration: 4000,
+      // duration: 4000,
       closeButtonText: "ok",
     });
     toast.present();

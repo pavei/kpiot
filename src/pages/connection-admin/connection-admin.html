@@ -55,7 +55,7 @@
   <ion-list>
     <button ion-item *ngFor="let item of items" >
       <p>{{ item.name }}</p>
-      <p>{{ item.id }}</p>
+      <!--<p>{{ item.id }}</p>-->
       <ion-note style="color: darkred" *ngIf="!item.access">{{ 'Não tem acesso' | translate }}</ion-note>
       <ion-note style="color: green" *ngIf="item.access">{{ 'Você tem acesso' | translate }}</ion-note>
 
