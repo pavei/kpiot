@@ -69,8 +69,8 @@ export class MyApp {
         // prior to doing any api requests as well.
         setTimeout(() => {
 
-          // alert("AQUIIIIIIIIIII no network")
-          this.sync();
+
+          this.sync(true);
         }, 5000);
       });
 
@@ -104,7 +104,7 @@ export class MyApp {
 
   }
 
-  async sync(){
+  async sync(fromNetwork?){
 
     let user = await this.userStorage.getCurrentUser();
     if (user.openList){
@@ -123,12 +123,15 @@ export class MyApp {
 
         // alert("AQUIIIIIIIIIII no network 2")
       }).catch(error => {
+
+        if (fromNetwork){
+
+        }
+
         console.log("erro ao sincronziar", JSON.stringify(error));
       })
     }
-
   }
-
 
   asyncForEach = async (array, callback) => {
     for (let index = 0; index < array.length; index++) {

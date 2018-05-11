@@ -51,7 +51,6 @@ export class RegisterPage {
 
   async send(){
       this.submitted = true;
-
       let loader = this.loaderCtrl.create();
 
       try{
@@ -68,9 +67,7 @@ export class RegisterPage {
         }
 
       }catch (e){
-
         console.log(e);
-
         this.messageHandler.handleError(e);
       }finally {
         loader.dismiss();

@@ -45,6 +45,13 @@ export class ConnectionPage {
               public translate : TranslateService) {
     this.zone = new NgZone({enableLongStackTrace: false});
 
+    document.addEventListener('pause', () => {
+      this.ionViewWillLeave();
+    });
+
+    document.addEventListener('resume', () => {
+      this.ionViewWillEnter();
+    });
   }
 
   async ionViewWillEnter() {
@@ -60,6 +67,9 @@ export class ConnectionPage {
     this.scan = false;
     this.scanDevices(true);
   }
+
+
+
 
   ionViewWillLeave(){
 
